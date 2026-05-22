@@ -4,6 +4,8 @@
 
 A hands-on study guide covering **14 essential React patterns** with live demos, concise code samples, and interview-ready Q&A.
 
+🔗 **Live preview:** [reactpatterns.netlify.app](https://reactpatterns.netlify.app/)
+
 ---
 
 ## 📚 Patterns
