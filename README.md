@@ -1,73 +1,75 @@
-# React + TypeScript + Vite
+# ⚛️ React Pro Concepts
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Master React design patterns — one interactive example at a time.**
 
-Currently, two official plugins are available:
+A hands-on study guide covering **14 essential React patterns** with live demos, concise code samples, and interview-ready Q&A.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📚 Patterns
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🟢 Beginner
+| # | Pattern | What it teaches |
+|---|---------|----------------|
+| 1 | **Component Composition** | `children`, slot props, polymorphic `as` prop |
+| 8 | **Container / Presentational** | Separating logic from rendering |
 
-## Expanding the ESLint configuration
+### 🟡 Intermediate
+| # | Pattern | What it teaches |
+|---|---------|----------------|
+| 2 | **Custom Hooks** | Logic reuse with `useLocalStorage`, `useDebounce`, `useMediaQuery` |
+| 3 | **Render Props** | Sharing state via function props (`MouseTracker`, `Toggle`) |
+| 4 | **Higher-Order Components** | `withLoading`, `withAuth`, `composeHocs` |
+| 6 | **Controlled vs Uncontrolled** | Form state ownership, `FlexibleInput` dual-mode |
+| 7 | **Provider Pattern** | Context + `useReducer` for global state (Auth, Theme) |
+| 9 | **Error Boundaries** | Class-based error catching, custom fallbacks |
+| 10 | **Memoization** | `React.memo`, `useMemo`, `useCallback` |
+| 11 | **Portals** | `createPortal` for modals, tooltips, toasts |
+| 12 | **Code Splitting** | `React.lazy` + `Suspense` for route/component splitting |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🔴 Advanced
+| # | Pattern | What it teaches |
+|---|---------|----------------|
+| 5 | **Compound Components** | Implicit state via Context (`Tabs`, `Accordion`) |
+| 13 | **State Reducer** | Inversion of control with custom reducers |
+| 14 | **Props Getters** | Headless component APIs (`useSelect`, `useValidatedInput`) |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [http://localhost:5173](http://localhost:5173) and pick a pattern from the sidebar.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Commands
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm test` | Run tests (vitest) |
+
+---
+
+## 🎨 Features
+
+- **Code examples** on every page with Monokai syntax highlighting
+- **Live demos** — interact with each pattern directly in the browser
+- **Interview questions** — common Q&A for each pattern
+- **Dark theme** — easy on the eyes for late-night studying
+- **Lazy-loaded routes** — each pattern is its own chunk
+
+---
+
+## 👥 Contributors
+
+- [behuti](https://github.com/behuti) — creator
+- [opencode](https://opencode.ai) — collaborator
+
+---
+
+<p align="center">Built with React 19, TypeScript, and Vite</p>
