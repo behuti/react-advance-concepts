@@ -46,8 +46,12 @@ export function UserCard({ user, onSelect }: UserCardProps) {
     <article className="user-card" onClick={() => onSelect(user)}>
       <img
         src={user.avatarUrl}
-        alt={user.name}
+        alt={`Avatar of ${user.name}`}
         className="user-card__avatar"
+        width={48}
+        height={48}
+        loading="lazy"
+        decoding="async"
       />
       <div className="user-card__info">
         <h3 className="user-card__name">{user.name}</h3>

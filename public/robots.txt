@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://reactpatterns.netlify.app/sitemap.xml

@@ -9,13 +9,24 @@
   --color-border: #334155;
   --color-text: #e2e8f0;
   --color-text-muted: #94a3b8;
-  --color-text-dim: #64748b;
+  --color-text-dim: #8593a8;
   --color-primary: #60a5fa;
   --color-primary-hover: #3b82f6;
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
-  --color-info: #3b82f6;
+  /* Lighter red for small error TEXT on dark surfaces — #ef4444 only reaches
+     3.89:1 on the card surface and fails AA for body text. */
+  --color-error-text: #f87171;
+  /* Text-on-color background tokens: darkened so white/light foreground text
+     clears the WCAG AA 4.5:1 contrast ratio (the bright accent colors above
+     only reach ~2.2:1 with white text and fail Lighthouse). */
+  --color-success-deep: #15803d;
+  --color-warning-deep: #b45309;
+  --color-error-deep: #b91c1c;
+  --color-action: #2563eb;
+  --color-action-hover: #1d4ed8;
+  --color-info: #2563eb;
   --sidebar-width: 300px;
   --radius: 8px;
   --radius-lg: 12px;
@@ -31,6 +42,28 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Visible keyboard focus for all interactive elements. Lighthouse / WCAG
+   2.4.7 requires a perceivable focus indicator; the per-component
+   `outline: none` rules below would otherwise remove it for keyboard users. */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect users who prefer reduced motion: disable the decorative fade/slide/
+   spin animations and transitions that can trigger vestibular discomfort. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 body {
@@ -329,7 +362,7 @@ pre code.hljs {
 
 button {
   padding: 8px 16px;
-  background: var(--color-primary);
+  background: var(--color-action);
   color: #fff;
   border: none;
   border-radius: var(--radius);
@@ -342,7 +375,7 @@ button {
 }
 
 button:hover {
-  background: var(--color-primary-hover);
+  background: var(--color-action-hover);
 }
 
 button:disabled {
@@ -443,7 +476,7 @@ button:disabled {
 }
 
 .error-message {
-  color: var(--color-error) !important;
+  color: var(--color-error-text) !important;
   font-size: 0.8rem !important;
   margin-top: 4px !important;
 }
@@ -694,8 +727,8 @@ button:disabled {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.toast--success { background: var(--color-success); }
-.toast--error { background: var(--color-error); }
+.toast--success { background: var(--color-success-deep); }
+.toast--error { background: var(--color-error-deep); }
 .toast--info { background: var(--color-info); }
 
 @keyframes slideIn {

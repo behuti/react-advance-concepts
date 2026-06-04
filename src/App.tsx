@@ -1,9 +1,9 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom'
-import hljs from 'highlight.js'
-import 'highlight.js/styles/monokai-sublime.css'
 import { patternList } from './patterns'
 import type { PatternMeta } from './patterns'
+
+type HljsInstance = { highlightElement(el: HTMLElement): void }
 
 const patternComponents: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
   'component-composition': lazy(() =>
@@ -78,10 +78,13 @@ const patternComponents: Record<string, React.LazyExoticComponent<React.Componen
   ),
 }
 
+// Deepened variants so the white badge text clears WCAG AA 4.5:1 contrast.
+// The bright accent colors (#22c55e/#f59e0b/#ef4444) only reach ~2.2:1 with
+// white text and would fail the Lighthouse accessibility audit.
 const difficultyColors: Record<PatternMeta['difficulty'], string> = {
-  beginner: '#22c55e',
-  intermediate: '#f59e0b',
-  advanced: '#ef4444',
+  beginner: '#15803d',
+  intermediate: '#b45309',
+  advanced: '#b91c1c',
 }
 
 function Sidebar() {
@@ -160,30 +163,50 @@ function PatternFallback() {
 
 function HighlightOnNavigate() {
   const location = useLocation()
+  const frameRef = useRef<number | null>(null)
+  const hljsRef = useRef<HljsInstance | null>(null)
 
   useEffect(() => {
-    try {
-      hljs.highlightAll()
-    } catch {
-      // highlight.js errors should not break the app
-    }
-
+    let active = true
     const main = document.querySelector('.main-content')
-    if (!main) return
+    if (!main) return () => { active = false }
 
-    const observer = new MutationObserver(() => {
-      const blocks = main.querySelectorAll<HTMLElement>('pre code:not(.hljs)')
-      blocks.forEach(block => {
+    const highlightPending = async () => {
+      const pending = main.querySelectorAll<HTMLElement>('pre code:not(.hljs)')
+      if (pending.length === 0) return
+      if (!hljsRef.current) {
+        const { default: h } = await import('./hljs')
+        if (!active) return
+        hljsRef.current = h
+      }
+      const hljs = hljsRef.current
+      pending.forEach(block => {
         try {
           hljs.highlightElement(block)
         } catch {
           // individual block failures should not break the app
         }
       })
+    }
+
+    highlightPending()
+
+    // Coalesce bursts of mutations into a single rAF-batched pass so we don't
+    // run the (cheap but non-trivial) query on every individual DOM change.
+    const observer = new MutationObserver(() => {
+      if (frameRef.current !== null) return
+      frameRef.current = requestAnimationFrame(() => {
+        frameRef.current = null
+        highlightPending()
+      })
     })
 
     observer.observe(main, { childList: true, subtree: true })
-    return () => observer.disconnect()
+    return () => {
+      active = false
+      observer.disconnect()
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current)
+    }
   }, [location])
 
   return null
